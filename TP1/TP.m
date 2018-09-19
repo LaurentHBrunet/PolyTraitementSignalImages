@@ -107,7 +107,10 @@ hold off;
 
 %Exercice II
 %1
-%TODO
+%Y(t)=2sin(165*pi*t) + 13cos(6*pi*t) - 3cos(80*pi*t)
+%2sin(165*pi*t)=>165/2=82.5
+%13cos(6*pi*t)=>6/2=3
+%3cos(80*pi*t)=>80/2=40
 
 %----------------------------------------------------------
 %2
@@ -151,34 +154,100 @@ end
 
 figure(6)
 hold on;
-subplot(7,1,2);
+subplot(6,1,1);
 plot(t20,s20);
 xlabel('t');
 ylabel('s(t)');
-suptitle('figure 6');
-subplot(7,1,3);
+title('figure 6');
+subplot(6,1,2);
 plot(t75,s75);
 xlabel('t');
 ylabel('s(t)');
 
-subplot(7,1,4);
+subplot(6,1,3);
 plot(t100,s100);
 xlabel('t');
 ylabel('s(t)');
 
-subplot(7,1,5);
+subplot(6,1,4);
 plot(t160,s160);
 xlabel('t');
 ylabel('s(t)');
 
-subplot(7,1,6);
+subplot(6,1,5);
 plot(t180,s180);
 xlabel('t');
 ylabel('s(t)');
 
-subplot(7,1,7);
+subplot(6,1,6);
 plot(t330,s330);
 xlabel('t');
 ylabel('s(t)');
 hold off;
+
+%----------------------------------------------------------
+%3
+%Plus la fréquence d'échantillonage est élevé, plus la forme du signal se
+%rapproche de la forme original.
+
+%----------------------------------------------------------
+%4
+%180Hz et 330Hz sont les deux seule fréquence d'échantillonage qui respecte
+%fe>=2fm puisque la fréquence maximale est 82.5
+
+%----------------------------------------------------------
+
+%Exercice III
+%1
+t = linspace(0,1,250);
+Y1 = zeros(250,1);
+Y2 = zeros(250,1);
+Y3 = zeros(250,1);
+
+for i = 1:250
+   Y1(i) = 7*sin(2*pi*10*t(i));
+   Y2(i) = 4*sin(2*pi*25*t(i)+ pi/3);
+   Y3(i) = 3*cos(2*pi*50*t(i));
+end
+
+figure(7)
+hold on;
+plot(t,Y1);
+plot(t,Y2);
+plot(t,Y3);
+legend('Y1','Y2','Y3');
+xlabel('t');
+ylabel('Y(t)');
+title('figure 7');
+hold off;
+
+%----------------------------------------------------------
+%2
+%Avec le graphique il est possible de déterminer les période suivante pour
+%les différents signaux: Y1:0.1, Y2:0.04, Y3:0.02.
+%Théoriquement la f=1/T donc les période théorique des signaux sont:
+%Y1:0.1, Y2:0.04, Y3:0.02.
+
+%----------------------------------------------------------
+%3
+z  = zeros(250,1);
+for i = 1:250
+   z(i) = Y1(i) + Y2(i) + Y3(i);
+end
+
+figure(8)
+hold on;
+plot(t,z);
+legend('z');
+xlabel('t');
+ylabel('Z(t)');
+title('figure 8');
+hold off;
+
+%Graphiquement la période semble être 0.2.
+%La fréquence du signal est le plus grand dénominateur commun des fréquence
+%de Y1, Y2 et Y3 qui est égal a 5. La période est donc 1/5 qui est 0.2.
+
+%----------------------------------------------------------
+%4
 
