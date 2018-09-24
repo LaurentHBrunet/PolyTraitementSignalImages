@@ -251,3 +251,20 @@ hold off;
 %----------------------------------------------------------
 %4
 
+%----------------------------------------------------------
+
+%Exercice IV
+%1
+[ data, fe ] = audioread('audio.wav');
+%Décommentez la ligne suivante pour écouter le son.
+%sound(data,fe);
+
+%Il semble y avoir une haute et une basse fréquence qui perturbe la
+%mélodie. 
+
+%----------------------------------------------------------
+%2
+tfd=fft(data,fe);
+
+
+
