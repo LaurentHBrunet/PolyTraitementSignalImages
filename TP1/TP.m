@@ -250,6 +250,67 @@ hold off;
 
 %----------------------------------------------------------
 %4
+%https://www.mathworks.com/help/signal/ug/discrete-fourier-transform.html
+fftY1=fft(Y1);                      %tfd
+absFftY1=abs(fftY1);                    %Magnitude
+fftY1(absFftY1<1e-6)=0;
+%PAbsFftY1=unwrap(angle(fftY1));     %phase
+fFftY1 = (0:length(fftY1)-1)*100/length(fftY1);
+
+%https://www.mathworks.com/help/matlab/ref/fft.html
+fftY11=fft(Y1);
+P2=abs(fftY11/length(fftY11));
+P1=P2(1:length(fftY11)/2+1);
+P1(2:end-1)=2*P1(2:end-1);
+fY11=250*(0:(length(fftY11)/2))/length(fftY11);
+
+
+
+fftY2=fft(Y2);                      %tfd
+absFftY2=abs(fftY2);                    %Magnitude
+fftY2(absFftY2<1e-6)=0;
+PAbsFftY2=unwrap(angle(fftY2));     %phase
+fFftY2 = (0:length(fftY2)-1)*100/length(fftY2);
+
+fftY3=fft(Y3);                      %tfd
+absFftY3=abs(fftY3);                    %Magnitude
+fftY3(absFftY3<1e-6)=0;
+PAbsFftY3=unwrap(angle(fftY3));     %phase
+fFftY3 = (0:length(fftY3)-1)*100/length(fftY3);
+
+figure(9)
+hold on;
+subplot(4,1,1);
+plot(fFftY1,absFftY1);
+
+subplot(4,1,2);
+plot(fY11,P1);
+
+subplot(4,1,3);
+plot(fFftY2,absFftY2);
+
+subplot(4,1,4);
+plot(fFftY3,absFftY3);
+
+hold off;
+
+%Que remarquez vous???
+
+%----------------------------------------------------------
+%5
+
+fftz=fft(z);                      %tfd
+absFftz=abs(fftz);                    %Magnitude
+fftz(absFftz<1e-6)=0;
+PAbsFftz=unwrap(angle(fftz));     %phase
+fFftz = (0:length(fftz)-1)*100/length(fftz);
+
+figure(10)
+hold on;
+plot(fFftz,absFftz);
+hold off;
+%Que remarquez vous?
+%Addition des 3 autres
 
 %----------------------------------------------------------
 
@@ -264,7 +325,16 @@ hold off;
 
 %----------------------------------------------------------
 %2
-tfd=fft(data,fe);
+fftData=fft(data);                      %tfd
+absFftData=abs(fftData);                    %Magnitude
+fftData(absFftData<1e-6)=0;
+PAbsFftData=unwrap(angle(fftData));     %phase
+fFftData = (0:length(fftData)-1)*100/length(fftData);
+
+figure(11)
+hold on;
+plot(fFftData, absFftData);
+hold off;
 
 
 
