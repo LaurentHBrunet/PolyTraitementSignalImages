@@ -259,11 +259,10 @@ fFftY1 = (0:length(fftY1)-1)*100/length(fftY1);
 
 %https://www.mathworks.com/help/matlab/ref/fft.html
 fftY11=fft(Y1);
-P2=abs(fftY11/length(fftY11));
-P1=P2(1:length(fftY11)/2+1);
-P1(2:end-1)=2*P1(2:end-1);
+Y1P2=abs(fftY11/length(fftY11));
+Y1P1=Y1P2(1:length(fftY11)/2+1);
+Y1P1(2:end-1)=2*Y1P1(2:end-1);
 fY11=250*(0:(length(fftY11)/2))/length(fftY11);
-
 
 
 fftY2=fft(Y2);                      %tfd
@@ -272,25 +271,45 @@ fftY2(absFftY2<1e-6)=0;
 PAbsFftY2=unwrap(angle(fftY2));     %phase
 fFftY2 = (0:length(fftY2)-1)*100/length(fftY2);
 
+fftY22=fft(Y2);
+Y2P2=abs(fftY22/length(fftY22));
+Y2P1=Y2P2(1:length(fftY22)/2+1);
+Y2P1(2:end-1)=2*Y2P1(2:end-1);
+fY22=250*(0:(length(fftY22)/2))/length(fftY22);
+
+
 fftY3=fft(Y3);                      %tfd
 absFftY3=abs(fftY3);                    %Magnitude
 fftY3(absFftY3<1e-6)=0;
 PAbsFftY3=unwrap(angle(fftY3));     %phase
 fFftY3 = (0:length(fftY3)-1)*100/length(fftY3);
 
+fftY33=fft(Y3);
+Y3P2=abs(fftY33/length(fftY33));
+Y3P1=Y3P2(1:length(fftY33)/2+1);
+Y3P1(2:end-1)=2*Y3P1(2:end-1);
+fY33=250*(0:(length(fftY11)/2))/length(fftY11);
+
+
 figure(9)
 hold on;
-subplot(4,1,1);
+subplot(6,1,1);
 plot(fFftY1,absFftY1);
 
-subplot(4,1,2);
-plot(fY11,P1);
+subplot(6,1,2);
+plot(fY11,Y1P1);
 
-subplot(4,1,3);
+subplot(6,1,3);
 plot(fFftY2,absFftY2);
 
-subplot(4,1,4);
+subplot(6,1,4);
+plot(fY22,Y2P1);
+
+subplot(6,1,5);
 plot(fFftY3,absFftY3);
+
+subplot(6,1,6);
+plot(fY33,Y3P1);
 
 hold off;
 
@@ -305,9 +324,21 @@ fftz(absFftz<1e-6)=0;
 PAbsFftz=unwrap(angle(fftz));     %phase
 fFftz = (0:length(fftz)-1)*100/length(fftz);
 
+fftzz=fft(z);
+zP2=abs(fftzz/length(fftzz));
+zP1=zP2(1:length(fftzz)/2+1);
+zP1(2:end-1)=2*zP1(2:end-1);
+fz=250*(0:(length(fftzz)/2))/length(fftzz);
+
 figure(10)
 hold on;
+
+subplot(2,1,1);
 plot(fFftz,absFftz);
+
+subplot(2,1,2);
+plot(fz,zP1);
+
 hold off;
 %Que remarquez vous?
 %Addition des 3 autres
@@ -331,9 +362,19 @@ fftData(absFftData<1e-6)=0;
 PAbsFftData=unwrap(angle(fftData));     %phase
 fFftData = (0:length(fftData)-1)*100/length(fftData);
 
+fftData2=fft(data);
+dataP2=abs(fftData2/length(fftData2));
+dataP1=dataP2(1:length(fftData2)/2+1);
+dataP1(2:end-1)=2*dataP1(2:end-1);
+fdata=250*(0:(length(fftData2)/2))/length(fftData2);
+
 figure(11)
 hold on;
+subplot(2,1,1);
 plot(fFftData, absFftData);
+
+subplot(2,1,2);
+plot(fdata, dataP1);
 hold off;
 
 
