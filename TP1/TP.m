@@ -264,25 +264,11 @@ Y1P1=Y1P2(1:length(fftY11)/2+1);
 Y1P1(2:end-1)=2*Y1P1(2:end-1);
 fY11=250*(0:(length(fftY11)/2))/length(fftY11);
 
-
-fftY2=fft(Y2);                      %tfd
-absFftY2=abs(fftY2);                    %Magnitude
-fftY2(absFftY2<1e-6)=0;
-PAbsFftY2=unwrap(angle(fftY2));     %phase
-fFftY2 = (0:length(fftY2)-1)*100/length(fftY2);
-
 fftY22=fft(Y2);
 Y2P2=abs(fftY22/length(fftY22));
 Y2P1=Y2P2(1:length(fftY22)/2+1);
 Y2P1(2:end-1)=2*Y2P1(2:end-1);
 fY22=250*(0:(length(fftY22)/2))/length(fftY22);
-
-
-fftY3=fft(Y3);                      %tfd
-absFftY3=abs(fftY3);                    %Magnitude
-fftY3(absFftY3<1e-6)=0;
-PAbsFftY3=unwrap(angle(fftY3));     %phase
-fFftY3 = (0:length(fftY3)-1)*100/length(fftY3);
 
 fftY33=fft(Y3);
 Y3P2=abs(fftY33/length(fftY33));
@@ -293,27 +279,35 @@ fY33=250*(0:(length(fftY11)/2))/length(fftY11);
 
 figure(9)
 hold on;
+title('figure 9');
 subplot(6,1,1);
 plot(fFftY1,absFftY1);
+legend('Y1');
+xlabel('frequence');
+ylabel('Amplitude');
 
 subplot(6,1,2);
 plot(fY11,Y1P1);
-
-subplot(6,1,3);
-plot(fFftY2,absFftY2);
+legend('Y11');
+xlabel('frequence');
+ylabel('Amplitude');
 
 subplot(6,1,4);
 plot(fY22,Y2P1);
-
-subplot(6,1,5);
-plot(fFftY3,absFftY3);
+legend('Y2');
+xlabel('frequence');
+ylabel('Amplitude');
 
 subplot(6,1,6);
 plot(fY33,Y3P1);
+legend('Y3');
+xlabel('frequence');
+ylabel('Amplitude');
 
 hold off;
 
-%Que remarquez vous???
+%Que remarquez vous?
+%Il y a une seule fréquence par signal que l'on appercois sur le graphique
 
 %----------------------------------------------------------
 %5
@@ -332,16 +326,23 @@ fz=250*(0:(length(fftzz)/2))/length(fftzz);
 
 figure(10)
 hold on;
-
+title('figure 10');
 subplot(2,1,1);
 plot(fFftz,absFftz);
+legend('Z');
+xlabel('frequence');
+ylabel('Amplitude');
 
 subplot(2,1,2);
 plot(fz,zP1);
+legend('ZZ');
+xlabel('frequence');
+ylabel('Amplitude');
 
 hold off;
 %Que remarquez vous?
-%Addition des 3 autres
+%Les trois frequence que l'on retrouvais sur chaque graphique se retrouve
+%dans celui-ci.
 
 %----------------------------------------------------------
 
@@ -366,16 +367,26 @@ fftData2=fft(data);
 dataP2=abs(fftData2/length(fftData2));
 dataP1=dataP2(1:length(fftData2)/2+1);
 dataP1(2:end-1)=2*dataP1(2:end-1);
-fdata=250*(0:(length(fftData2)/2))/length(fftData2);
+fdata=250*(0:(length(fftData2)/2))/1000;
 
 figure(11)
 hold on;
+title('figure 11');
 subplot(2,1,1);
 plot(fFftData, absFftData);
+legend('data');
+xlabel('frequence');
+ylabel('Amplitude');
 
 subplot(2,1,2);
 plot(fdata, dataP1);
+legend('data2');
+xlabel('frequence');
+ylabel('Amplitude');
 hold off;
 
-
+%----------------------------------------------------------
+%3
+%La haute fréquence semble etre un si ou do bemole et la basse frequence
+%semble etre un sol diese ou la bemole
 
