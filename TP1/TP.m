@@ -104,7 +104,7 @@ title('figure 5');
 hold off;
 
 %----------------------------------------------------------
-
+%%
 %Exercice II
 %1
 %Y(t)=2sin(165*pi*t) + 13cos(6*pi*t) - 3cos(80*pi*t)
@@ -196,7 +196,7 @@ hold off;
 %fe>=2fm puisque la fréquence maximale est 82.5
 
 %----------------------------------------------------------
-
+%%
 %Exercice III
 %1
 t = linspace(0,1,250);
@@ -250,13 +250,7 @@ hold off;
 
 %----------------------------------------------------------
 %4
-%https://www.mathworks.com/help/signal/ug/discrete-fourier-transform.html
-fftY1=fft(Y1);                      %tfd
-absFftY1=abs(fftY1);                    %Magnitude
-fftY1(absFftY1<1e-6)=0;
-%PAbsFftY1=unwrap(angle(fftY1));     %phase
-fFftY1 = (0:length(fftY1)-1)*100/length(fftY1);
-
+%En utilisant la méthode proposer sur le liens suivant:
 %https://www.mathworks.com/help/matlab/ref/fft.html
 fftY11=fft(Y1);
 Y1P2=abs(fftY11/length(fftY11));
@@ -280,25 +274,20 @@ fY33=250*(0:(length(fftY11)/2))/length(fftY11);
 figure(9)
 hold on;
 title('figure 9');
-subplot(6,1,1);
-plot(fFftY1,absFftY1);
+
+subplot(3,1,1);
+plot(fY11,Y1P1);
 legend('Y1');
 xlabel('frequence');
 ylabel('Amplitude');
 
-subplot(6,1,2);
-plot(fY11,Y1P1);
-legend('Y11');
-xlabel('frequence');
-ylabel('Amplitude');
-
-subplot(6,1,4);
+subplot(3,1,2);
 plot(fY22,Y2P1);
 legend('Y2');
 xlabel('frequence');
 ylabel('Amplitude');
 
-subplot(6,1,6);
+subplot(3,1,3);
 plot(fY33,Y3P1);
 legend('Y3');
 xlabel('frequence');
@@ -307,16 +296,11 @@ ylabel('Amplitude');
 hold off;
 
 %Que remarquez vous?
-%Il y a une seule fréquence par signal que l'on appercois sur le graphique
+%On retrouve les mêmes valeurs théoriques que nous attendions. Nous pouvons
+%confirmer cela en calculant la période.
 
 %----------------------------------------------------------
 %5
-
-fftz=fft(z);                      %tfd
-absFftz=abs(fftz);                    %Magnitude
-fftz(absFftz<1e-6)=0;
-PAbsFftz=unwrap(angle(fftz));     %phase
-fFftz = (0:length(fftz)-1)*100/length(fftz);
 
 fftzz=fft(z);
 zP2=abs(fftzz/length(fftzz));
@@ -326,26 +310,19 @@ fz=250*(0:(length(fftzz)/2))/length(fftzz);
 
 figure(10)
 hold on;
-title('figure 10');
-subplot(2,1,1);
-plot(fFftz,absFftz);
-legend('Z');
-xlabel('frequence');
-ylabel('Amplitude');
-
-subplot(2,1,2);
 plot(fz,zP1);
-legend('ZZ');
+legend('Z');
 xlabel('frequence');
 ylabel('Amplitude');
 
 hold off;
 %Que remarquez vous?
-%Les trois frequence que l'on retrouvais sur chaque graphique se retrouve
-%dans celui-ci.
+%Les trois frequence que l'on retrouvais sur chaque graphique qui composait
+%les différents signaux, se retrouve dans le signal composé des trois
+%signaux.
 
 %----------------------------------------------------------
-
+%%
 %Exercice IV
 %1
 [ data, fe ] = audioread('audio.wav');
@@ -357,36 +334,127 @@ hold off;
 
 %----------------------------------------------------------
 %2
-fftData=fft(data);                      %tfd
-absFftData=abs(fftData);                    %Magnitude
-fftData(absFftData<1e-6)=0;
-PAbsFftData=unwrap(angle(fftData));     %phase
-fFftData = (0:length(fftData)-1)*100/length(fftData);
 
 fftData2=fft(data);
 dataP2=abs(fftData2/length(fftData2));
 dataP1=dataP2(1:length(fftData2)/2+1);
 dataP1(2:end-1)=2*dataP1(2:end-1);
-fdata=250*(0:(length(fftData2)/2))/1000;
+fdata=fe*(0:(length(fftData2)/2))/length(fftData2);
 
 figure(11)
 hold on;
 title('figure 11');
-subplot(2,1,1);
-plot(fFftData, absFftData);
-legend('data');
-xlabel('frequence');
-ylabel('Amplitude');
-
-subplot(2,1,2);
 plot(fdata, dataP1);
-legend('data2');
+legend('data');
 xlabel('frequence');
 ylabel('Amplitude');
 hold off;
 
 %----------------------------------------------------------
 %3
-%La haute fréquence semble etre un si ou do bemole et la basse frequence
-%semble etre un sol diese ou la bemole
+%La haute fréquence semble etre un ré diese ou mi bemol et la basse frequence
+%semble etre un sol.
 
+%----------------------------------------------------------
+%4
+wn=900/(fe/2);
+fpb=fir1(128,wn,'low');
+fil=filter(fpb,1,data);
+%sound(fil,fe);
+
+%Nous perdons les haute fréquence qui font partie de la mélodie. Puisqu'il
+%ne sagit pas d'un filtre parfait, nous devons utiliser une fréquence de
+%coupure plus basse pour éliminer le bruit parasite.
+%En utilisant un filtre-passe bande, il serait possible de cibler plus
+%précisément les fréquences que nous voulons atténuer. Nous conserverions
+%ainsi plus d'information de la mélodie tout en supprimant la perturbation.
+
+%----------------------------------------------------------
+%5 et 6
+wn=250/(fe/2);
+figure(12)
+hold on;
+title('figure 12');
+%Chebyshev
+w=chebwin(128+1,30);
+chebyshev=fir1(128,wn,'high',w);
+freqz(chebyshev);
+hold on;
+
+%Hamming
+hamming=fir1(128,wn,'high');
+freqz(hamming);
+hold on;
+
+%Blackman
+w=blackman(128+1);
+bman=fir1(128,wn,'high',w);
+freqz(bman);
+legend('s1','s2','s3');
+hold off;
+
+%Tout les filtres semble converger vers la même valeur, mais l'amplitude
+%d'origine des différents filtre est différente.
+
+%----------------------------------------------------------
+%7
+%Chevyshev
+chebyshevFil = filter(chebyshev,1,fil);
+%sound(chebyshevFil,fe);
+
+%Hamming
+hammingFil = filter(hamming,1,fil);
+%sound(hammingFil,fe);
+
+%Blackman
+%sound(fil,fe);
+bmanFil = filter(bman,1,fil);
+%sound(bmanFil,fe);
+
+%La basse fréquence qui perturbe la mélodie n'est plus présente. Plus la
+%fréquence de coupure est élevé, plus nous coupons les basse-fréquences et
+%plus nous coupons des fréquence de la mélodie que nous voudrions
+%conserver. 
+
+%----------------------------------------------------------
+%8
+fftCheby=fft(chebyshevFil);
+chebyP2=abs(fftCheby/length(fftCheby));
+chebyP1=chebyP2(1:length(fftCheby)/2+1);
+chebyP1(2:end-1)=2*chebyP1(2:end-1);
+fcheby=fe*(0:(length(fftCheby)/2))/length(fftCheby);
+
+fftham=fft(hammingFil);
+hamP2=abs(fftham/length(fftham));
+hamP1=hamP2(1:length(fftham)/2+1);
+hamP1(2:end-1)=2*hamP1(2:end-1);
+fham=fe*(0:(length(fftham)/2))/length(fftham);
+
+fftBlack=fft(bmanFil);
+blackP2=abs(fftBlack/length(fftBlack));
+blackP1=blackP2(1:length(fftBlack)/2+1);
+blackP1(2:end-1)=2*blackP1(2:end-1);
+fblack=fe*(0:(length(fftBlack)/2))/length(fftBlack);
+
+figure(13)
+hold on;
+subplot(3,1,1);
+plot(fcheby, chebyP1);
+title('Chebyshev, Hamming et Blackman');
+legend('cheby');
+xlabel('frequence');
+ylabel('Amplitude');
+subplot(3,1,2);
+plot(fham, hamP1);
+legend('ham');
+xlabel('frequence');
+ylabel('Amplitude');
+subplot(3,1,3);
+plot(fblack, blackP1);
+legend('black');
+xlabel('frequence');
+ylabel('Amplitude');
+hold off;
+
+%Oui, l'amplitude des fréquences changes selon le filtre utilisé. Chebyshev
+%donne une amplitude plus basse et Blackman la plus élevé.
